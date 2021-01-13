@@ -5,8 +5,8 @@ const result = document.getElementById("result");
 const listImgs = document.getElementById("list-imgs");
 const mainImage = document.getElementById("main-img");
 const imageDisplay = mainImage.firstElementChild;
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
-const inputURL = document.getElementById("img-url");
+// const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
+// const inputURL = document.getElementById("img-url");
 const predictLoader = document.getElementById("predict-loader");
 const imgTextPredict = document.getElementById("img-text-predict");
 let goodImg = true;
@@ -90,9 +90,9 @@ async function predict() {
 }
 
 // cannot load image
-function handleErrImg() {
-	goodImg = false;
-}
+// function handleErrImg() {
+// 	goodImg = false;
+// }
 
 // loading bar
 let seconds = 50;
@@ -114,38 +114,38 @@ function changeImage() {
 }
 
 // if users uses url?
-async function changeImageByUrl() {
-	result.style.display = "none";
-	if (inputURL.value.includes("base64")) {
-		var blob = dataURItoBlob(inputURL.value);
-		imageDisplay.src = URL.createObjectURL(blob);
-	} else if (inputURL.value.match(/(jpg|jpeg|gif|png)((\?.*)$|$)/mg) != null) {
-		imageDisplay.onload = () => { imageDisplay = imageDisplay.onload = null; }
-		imageDisplay.setAttribute("crossOrigin", 'anonymous');
-		imageDisplay.src = inputURL.value;
-		// fetch_img_url();
-	}
-	imgTextPredict.style.display = "none";
-}
+// async function changeImageByUrl() {
+// 	result.style.display = "none";
+// 	if (inputURL.value.includes("base64")) {
+// 		var blob = dataURItoBlob(inputURL.value);
+// 		imageDisplay.src = URL.createObjectURL(blob);
+// 	} else if (inputURL.value.match(/(jpg|jpeg|gif|png)((\?.*)$|$)/mg) != null) {
+// 		imageDisplay.onload = () => { imageDisplay = imageDisplay.onload = null; }
+// 		imageDisplay.setAttribute("crossOrigin", 'anonymous');
+// 		imageDisplay.src = inputURL.value;
+// 		// fetch_img_url();
+// 	}
+// 	imgTextPredict.style.display = "none";
+// }
 
 // convert base64 to normal url of an image
 // src: https://stackoverflow.com/questions/51416374/how-to-convert-base64-to-normal-image-url
-function dataURItoBlob(dataURI) {
-	// convert base64/URLEncoded data component to raw binary data held in a string
-	var byteString;
-	if (dataURI.split(',')[0].indexOf('base64') >= 0)
-		byteString = atob(dataURI.split(',')[1]);
-	else
-		byteString = unescape(dataURI.split(',')[1]);
-	// separate out the mime component
-	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-	// write the bytes of the string to a typed array
-	var ia = new Uint8Array(byteString.length);
-	for (var i = 0; i < byteString.length; i++) {
-		ia[i] = byteString.charCodeAt(i);
-	}
-	return new Blob([ia], { type: mimeString });
-}
+// function dataURItoBlob(dataURI) {
+// 	// convert base64/URLEncoded data component to raw binary data held in a string
+// 	var byteString;
+// 	if (dataURI.split(',')[0].indexOf('base64') >= 0)
+// 		byteString = atob(dataURI.split(',')[1]);
+// 	else
+// 		byteString = unescape(dataURI.split(',')[1]);
+// 	// separate out the mime component
+// 	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+// 	// write the bytes of the string to a typed array
+// 	var ia = new Uint8Array(byteString.length);
+// 	for (var i = 0; i < byteString.length; i++) {
+// 		ia[i] = byteString.charCodeAt(i);
+// 	}
+// 	return new Blob([ia], { type: mimeString });
+// }
 
 // list of example images
 listImgs.getElementsByClassName("item").forEach(it => {
