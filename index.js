@@ -130,23 +130,22 @@ function changeImage() {
 async function changeImageByUrl() {
 	// mainImage.style.display = "none";
 	result.style.display = "none";
-	var imgUrl = inputURL.value;
-	if (imgUrl.includes("base64")){
-		var blob = dataURItoBlob(dataURI);
+	if (inputURL.value.includes("base64")){
+		var blob = dataURItoBlob(inputURL.value);
 		imageDisplay.src = URL.createObjectURL(blob);
-	} else if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-		// await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
+	} else if (inputURL.value.match(/(jpg|jpeg|gif|png)((\?.*)$|$)/mg)	!= null) {
+		// await fetch(proxyUrl+inputURL.value) // https://cors-anywhere.herokuapp.com/${url}
 		// 	.then(response => response.blob())
 		// 	.then(images => {
 		// 		imageDisplay.src = URL.createObjectURL(images);
 		// 	})
-		imageDisplay.src = imgUrl;
+		imageDisplay.src = inputURL.value;
 		fetch_img_url();
 	}
 	imgTextPredict.style.display = "none";
 
-	// if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null && goodImg){
-	// 	imageDisplay.src = imgUrl;
+	// if (inputURL.value.match(/\.(jpeg|jpg|gif|png)$/) != null && goodImg){
+	// 	imageDisplay.src = inputURL.value;
 	// 	// clonedImgDisp = imageDisplay.cloneNode(true);
 	// 	// imageDisplay.setAttribute("crossorigin", "anonymous");
 	// 	imgTextPredict.style.display = "none";
