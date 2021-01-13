@@ -5,7 +5,6 @@ const result = document.getElementById("result");
 const listImgs = document.getElementById("list-imgs");
 const mainImage = document.getElementById("main-img");
 const imageDisplay = mainImage.firstElementChild;
-// let clonedImgDisp = imageDisplay.cloneNode(true);
 const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
 const inputURL = document.getElementById("img-url");
 const predictLoader = document.getElementById("predict-loader");
@@ -14,8 +13,11 @@ let goodImg = true;
 
 // init
 async function initialize() {
+		// 193MB version
     // model = await tf.loadGraphModel('saved_model/not-quantized/model.json');
-    model = await tf.loadGraphModel('saved_model/quantized/model.json');
+
+		// 48MB version
+		model = await tf.loadGraphModel('saved_model/quantized/model.json');
 		classifierElement.style.display = 'block';
 		listImgs.style.display = "flex";
 		if (bar<99){
@@ -24,9 +26,7 @@ async function initialize() {
 			loader.style.display = "none";
 		}
     document.getElementById('predict').addEventListener('click', () => {
-			// predictLoader.style.display = "block";
 			predict();
-			// predictLoader.style.display = "none";
 		});
 }
 
@@ -41,19 +41,9 @@ async function fetch_img_url(){
 // when predict button is clicked
 async function predict () {
 	try {
-		// imageDisplay = mainImage.firstElementChild;
 		if (imageDisplay.src != ""){
 
 			mainImage.style.display = "block";
-
-			// if (inputURL.value != "" && goodImg){
-			// 	await fetch(proxyUrl+inputURL.value) // https://cors-anywhere.herokuapp.com/${url}
-			// 	.then(response => response.blob())
-			// 	.then(images => {
-			// 		clonedImgDisp.src = URL.createObjectURL(images);
-			// 	})
-			// 	clonedImgDisp.setAttribute("crossorigin", "anonymous");
-			// }
 
 			const offset = tf.scalar(255.0);
 			let tensorImg = tf.browser
@@ -89,7 +79,6 @@ async function predict () {
 						+ "</b> with <b>" + String(notSureScore) + "%</b> confidence!";
 			}
 
-			// imageDisplay.setAttribute("crossorigin", "");
 		} else {
 			result.getElementsByTagName("p")[0].innerHTML
 				= "You have to indicate an image to predict!"
@@ -120,7 +109,6 @@ let idloader = setInterval(function(){
 function changeImage() {
     var uploadedImage = document.getElementById('my-file-selector').files[0];
 		imageDisplay.src = URL.createObjectURL(uploadedImage);
-		// clonedImgDisp = imageDisplay.cloneNode(true);
 		result.style.display = "none";
 		mainImage.style.display = "block";
 		imgTextPredict.style.display = "none";
@@ -128,28 +116,15 @@ function changeImage() {
 
 // if users uses url?
 async function changeImageByUrl() {
-	// mainImage.style.display = "none";
 	result.style.display = "none";
 	if (inputURL.value.includes("base64")){
 		var blob = dataURItoBlob(inputURL.value);
 		imageDisplay.src = URL.createObjectURL(blob);
 	} else if (inputURL.value.match(/(jpg|jpeg|gif|png)((\?.*)$|$)/mg)	!= null) {
-		// await fetch(proxyUrl+inputURL.value) // https://cors-anywhere.herokuapp.com/${url}
-		// 	.then(response => response.blob())
-		// 	.then(images => {
-		// 		imageDisplay.src = URL.createObjectURL(images);
-		// 	})
 		imageDisplay.src = inputURL.value;
 		fetch_img_url();
 	}
 	imgTextPredict.style.display = "none";
-
-	// if (inputURL.value.match(/\.(jpeg|jpg|gif|png)$/) != null && goodImg){
-	// 	imageDisplay.src = inputURL.value;
-	// 	// clonedImgDisp = imageDisplay.cloneNode(true);
-	// 	// imageDisplay.setAttribute("crossorigin", "anonymous");
-	// 	imgTextPredict.style.display = "none";
-	// }
 }
 
 // convert base64 to normal url of an image
@@ -177,7 +152,6 @@ function dataURItoBlob(dataURI)
 listImgs.getElementsByClassName("item").forEach(it => {
 	it.addEventListener("click", function(){
 		imageDisplay.src = it.firstElementChild.src;
-		// clonedImgDisp = imageDisplay.cloneNode(true);
 		result.style.display = "none";
 		mainImage.style.display = "block";
 		imgTextPredict.style.display = "none";
