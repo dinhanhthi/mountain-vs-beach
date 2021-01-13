@@ -6,7 +6,8 @@ const listImgs = document.getElementById("list-imgs");
 const mainImage = document.getElementById("main-img");
 const imageDisplay = mainImage.firstElementChild;
 const inputURL = document.getElementById("img-url");
-const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
+const predictLoader = document.getElementById("predict-loader");
 
 // init
 async function initialize() {
@@ -19,7 +20,11 @@ async function initialize() {
 			clearInterval(idloader);
 			loader.style.display = "none";
 		}
-    document.getElementById('predict').addEventListener('click', () => predict());
+    document.getElementById('predict').addEventListener('click', () => {
+			// predictLoader.style.display = "block";
+			predict();
+			// predictLoader.style.display = "none";
+		});
 }
 
 // when predict button is clicked
@@ -37,9 +42,6 @@ async function predict () {
 												.div(offset)
 												.expandDims();
 			prediction = await model.predict(tensorImg).data();
-
-			console.log(prediction)
-			console.log(prediction[0]);
 
 			result.style.display = "block";
 
@@ -74,14 +76,9 @@ async function predict () {
 	}
 }
 
-// % sure?
-function countPercentage(score){
-
-}
-
 // loading bar
-let seconds = 60;
-let bar = 0;
+let seconds = 50;
+let bar = 1;
 let idloader = setInterval(function(){
     bar++;
 		var percent = loader.lastElementChild.firstElementChild;
@@ -97,6 +94,7 @@ function changeImage() {
 		mainImage.style.display = "block";
 }
 
+// if users uses url?
 async function changeImageByUrl() {
 	mainImage.style.display = "none";
 	result.style.display = "none";
