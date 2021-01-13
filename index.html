@@ -24,7 +24,7 @@
 					</div>
 
 					<div id="loader">
-						<p>Loading trained model, please wait around <b>1 minute</b>.<br />
+						<p>Loading trained model, please wait around <b>40 seconds (max)</b>.<br />
 							Don't worry, you <b>only</b> have to wait <b>once</b>! The next time you load the page, it's quick!</p>
 						<div class="progress">
 							<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
@@ -36,21 +36,35 @@
 							<img crossorigin="anonymous" />
 						</div>
 
-						<div class="button-row">
-							<input id="img-url" type="text" class="form-control" placeholder="Enter an image URL. I accept jpeg, jpg, png files.">
-							<label class="btn btn-primary" for="my-file-selector">
-									<input id="my-file-selector" type="file" class="d-none" onchange="changeImage()" accept="image/jpeg, image/png">
-									Upload
-							</label>
-							<label class="btn btn-primary class-b" for="predict">
-									<input id="predict" type="button" class="d-none" onclick="" >
-									Predict
-							</label>
-						</div>
-
 						<div id="result" class="result">
 							<p>No result yet!</p>
 						</div>
+
+						<div class="button-row">
+							<!-- input -->
+							<input id="img-url" type="text" class="form-control" placeholder="Enter an image URL. I accept jpeg, jpg, png files." onchange="changeImageByUrl()">
+
+							<div class="guide">
+								(URL should have a form like "<i>http://path/to/image.jpg</i>", otherwise it may not work!)<br />
+								<b>The upload button is the best choice!</b>
+							</div>
+
+							<!-- buttons -->
+							<div class="text-center">
+								<label class="btn btn-primary btn-sm" for="my-file-selector">
+									<input id="my-file-selector" type="file" class="d-none" onchange="changeImage()" accept="image/jpeg, image/png" >
+									Upload your own image
+								</label>
+								<label class="btn btn-warning btn-sm" for="predict">
+									<input id="predict" type="button" class="d-none" onclick="" >
+										Predict
+								</label>
+								<a class="btn btn-success btn-sm" target="_blank" href="report.pdf">
+									📙 My report
+								</a>
+							</div>
+						</div>
+
 					</div>
 
 				</div>
@@ -59,7 +73,7 @@
 			<div id="list-imgs" class="row">
 
 				<div class="col-12">
-					<p>You can choose below images for testing.</p>
+					<p class="text-center">You can choose below images for quickly testing.</p>
 				</div>
 
 				<div class="col-6 col-md-3">
@@ -124,6 +138,12 @@
 						<img src="img/list_imgs/m6.jpg" />
 					</div>
 				</div>
+			</div>
+
+			<div class="col-12 mt-3">
+				<p class="text-center">
+					Made with ♥ by <a href="https://dinhanhthi.com" target="_blank">Thi</a> for the interview of <a href="http://ideta.io/">Ideta company</a>.
+				</p>
 			</div>
 		</main>
 

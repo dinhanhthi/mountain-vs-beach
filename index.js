@@ -6,6 +6,7 @@ const listImgs = document.getElementById("list-imgs");
 const mainImage = document.getElementById("main-img");
 const imageDisplay = mainImage.firstElementChild;
 const inputURL = document.getElementById("img-url");
+const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 
 // init
 async function initialize() {
@@ -24,12 +25,10 @@ async function initialize() {
 // when predict button is clicked
 async function predict () {
 	try {
-
-		if (inputURL.value != ""){
-			changeImageByUrl();
-		}
-
 		if (imageDisplay.src != ""){
+
+			mainImage.style.display = "block";
+
 			const offset = tf.scalar(255.0);
 			let tensorImg = tf.browser
 												.fromPixels(imageDisplay)
@@ -68,9 +67,10 @@ async function predict () {
 			result.getElementsByTagName("p")[0].innerHTML
 				= "You have to indicate an image to predict!"
 		}
+
 	} catch (err) {
 		result.getElementsByTagName("p")[0].innerHTML
-			= "There are some unexpected errors.Please choose another image!"
+			= "There are some unexpected errors. Please choose another image!"
 	}
 }
 
@@ -97,17 +97,41 @@ function changeImage() {
 		mainImage.style.display = "block";
 }
 
-function changeImageByUrl() {
+async function changeImageByUrl() {
+	mainImage.style.display = "none";
+	result.style.display = "none";
 	var imgUrl = inputURL.value;
-	if (checkURL(imgUrl)) {
-		imageDisplay.src = imgUrl;
-		result.style.display = "none";
-		mainImage.style.display = "block";
+	if (imgUrl.includes("base64")){
+		var blob = dataURItoBlob(dataURI);
+		imageDisplay.src = URL.createObjectURL(blob);
+	} else if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+		await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
+			.then(response => response.blob())
+			.then(images => {
+				imageDisplay.src = URL.createObjectURL(images);
+			})
 	}
 }
 
-function checkURL(url) {
-	return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+// convert base64 to normal url of an image
+// src: https://stackoverflow.com/questions/51416374/how-to-convert-base64-to-normal-image-url
+function dataURItoBlob(dataURI)
+{
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if(dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for(var i = 0; i < byteString.length; i++)
+    {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], {type: mimeString});
 }
 
 // list of example images
