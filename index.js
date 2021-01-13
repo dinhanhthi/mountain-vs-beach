@@ -30,6 +30,14 @@ async function initialize() {
 		});
 }
 
+async function fetch_img_url(){
+	await fetch(proxyUrl+inputURL.value) // https://cors-anywhere.herokuapp.com/${url}
+	.then(response => response.blob())
+	.then(images => {
+		imageDisplay.src = URL.createObjectURL(images);
+	});
+}
+
 // when predict button is clicked
 async function predict () {
 	try {
@@ -99,7 +107,7 @@ function handleErrImg(){
 }
 
 // loading bar
-let seconds = 50;
+let seconds = 40;
 let bar = 1;
 let idloader = setInterval(function(){
     bar++;
@@ -127,11 +135,13 @@ async function changeImageByUrl() {
 		var blob = dataURItoBlob(dataURI);
 		imageDisplay.src = URL.createObjectURL(blob);
 	} else if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-		await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
-			.then(response => response.blob())
-			.then(images => {
-				imageDisplay.src = URL.createObjectURL(images);
-			})
+		// await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
+		// 	.then(response => response.blob())
+		// 	.then(images => {
+		// 		imageDisplay.src = URL.createObjectURL(images);
+		// 	})
+		imageDisplay.src = imgUrl;
+		fetch_img_url();
 	}
 	imgTextPredict.style.display = "none";
 
