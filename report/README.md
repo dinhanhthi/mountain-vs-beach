@@ -1,4 +1,4 @@
-# Report: mountain vs beach classifier
+# Documentation: mountain vs beach classifier
 
 ## Overview
 
@@ -71,7 +71,9 @@
            1. Upload from local (**recommended**).
            2. Choose example images right on the page.
            3. Paste from URL of image (must follow a good format, otherwise, it will not work!)
-        2. **The meaning of results**: because our problem is a binary classification. I use `sigmoid` to get the probability of the `score`. This `score` is between `0` (beach) and `1` (mountain).
+        2. **Technical problem with URL option**: TFJS's `fromPixels()` method is causing a [CORS error](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors) (we cannot fetch the image via a intermediate site like our web-app).
+            - **Solution**: use an intermediate site which allows CORS anywhere (I use `https://cors-anywhere.herokuapp.com`). The downside of this approach is that every time we paste a new image URL, we have to wait a little bit for the image to appear on the site. It kill the user experience a bit.
+        3. **The meaning of results**: because our problem is a binary classification. I use `sigmoid` to get the probability of the `score`. This `score` is between `0` (beach) and `1` (mountain).
            1. It's a mountain if `score > 0.65` and we output `score*100`%.
            2. It's a beach if `score < 0.35` and we output `(1-score)*100`%.
            3. **Not sure result**: `score` between `[0.35, 0.65]`. It may come from your input image (not good format, cannot fetch URL, there are both beach and mountain in the image, there aren't either mountain or beach in the image,...).

@@ -5,9 +5,12 @@ const result = document.getElementById("result");
 const listImgs = document.getElementById("list-imgs");
 const mainImage = document.getElementById("main-img");
 const imageDisplay = mainImage.firstElementChild;
+// let clonedImgDisp = imageDisplay.cloneNode(true);
+const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
 const inputURL = document.getElementById("img-url");
 const predictLoader = document.getElementById("predict-loader");
 const imgTextPredict = document.getElementById("img-text-predict");
+let goodImg = true;
 
 // init
 async function initialize() {
@@ -35,9 +38,19 @@ async function predict () {
 
 			mainImage.style.display = "block";
 
+			// if (inputURL.value != "" && goodImg){
+			// 	await fetch(proxyUrl+inputURL.value) // https://cors-anywhere.herokuapp.com/${url}
+			// 	.then(response => response.blob())
+			// 	.then(images => {
+			// 		clonedImgDisp.src = URL.createObjectURL(images);
+			// 	})
+			// 	clonedImgDisp.setAttribute("crossorigin", "anonymous");
+			// }
+
 			const offset = tf.scalar(255.0);
 			let tensorImg = tf.browser
 												.fromPixels(imageDisplay)
+												// .fromPixels(clonedImgDisp)
 												.resizeNearestNeighbor([200, 200])
 												.toFloat().sub(offset)
 												.div(offset)
@@ -68,7 +81,7 @@ async function predict () {
 						+ "</b> with <b>" + String(notSureScore) + "%</b> confidence!";
 			}
 
-			imageDisplay.setAttribute("crossorigin", "");
+			// imageDisplay.setAttribute("crossorigin", "");
 		} else {
 			result.getElementsByTagName("p")[0].innerHTML
 				= "You have to indicate an image to predict!"
@@ -78,6 +91,11 @@ async function predict () {
 		result.getElementsByTagName("p")[0].innerHTML
 			= "There are some unexpected errors. Please choose another image!"
 	}
+}
+
+// cannot load image
+function handleErrImg(){
+	goodImg = false;
 }
 
 // loading bar
@@ -94,33 +112,35 @@ let idloader = setInterval(function(){
 function changeImage() {
     var uploadedImage = document.getElementById('my-file-selector').files[0];
 		imageDisplay.src = URL.createObjectURL(uploadedImage);
+		// clonedImgDisp = imageDisplay.cloneNode(true);
 		result.style.display = "none";
 		mainImage.style.display = "block";
 		imgTextPredict.style.display = "none";
 }
 
 // if users uses url?
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
 async function changeImageByUrl() {
 	// mainImage.style.display = "none";
 	result.style.display = "none";
 	var imgUrl = inputURL.value;
-	// if (imgUrl.includes("base64")){
-	// 	var blob = dataURItoBlob(dataURI);
-	// 	imageDisplay.src = URL.createObjectURL(blob);
-	// } else if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-	// 	await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
-	// 		.then(response => response.blob())
-	// 		.then(images => {
-	// 			imageDisplay.src = URL.createObjectURL(images);
-	// 		})
-	// }
-
-	if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null){
-		imageDisplay.src = imgUrl;
-		imageDisplay.setAttribute("crossorigin", "anonymous");
-		imgTextPredict.style.display = "none";
+	if (imgUrl.includes("base64")){
+		var blob = dataURItoBlob(dataURI);
+		imageDisplay.src = URL.createObjectURL(blob);
+	} else if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+		await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
+			.then(response => response.blob())
+			.then(images => {
+				imageDisplay.src = URL.createObjectURL(images);
+			})
 	}
+	imgTextPredict.style.display = "none";
+
+	// if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null && goodImg){
+	// 	imageDisplay.src = imgUrl;
+	// 	// clonedImgDisp = imageDisplay.cloneNode(true);
+	// 	// imageDisplay.setAttribute("crossorigin", "anonymous");
+	// 	imgTextPredict.style.display = "none";
+	// }
 }
 
 // convert base64 to normal url of an image
@@ -148,6 +168,7 @@ function dataURItoBlob(dataURI)
 listImgs.getElementsByClassName("item").forEach(it => {
 	it.addEventListener("click", function(){
 		imageDisplay.src = it.firstElementChild.src;
+		// clonedImgDisp = imageDisplay.cloneNode(true);
 		result.style.display = "none";
 		mainImage.style.display = "block";
 		imgTextPredict.style.display = "none";

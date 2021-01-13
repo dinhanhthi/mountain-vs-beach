@@ -24,6 +24,14 @@
 							Hello, I'm a classifier. 🤗<br />
 							I can tell you whether an image you indicate is <b>a mountain</b> ⛰️ or <b>a beach</b> 🏖️ or <b>their related</b> things 🌊 🌳 (ocean, sea, forest, mainland,...).
 						</p>
+						<div class="buttons text-center">
+							<a class="btn btn-success btn-sm" target="_blank" href="https://github.com/dinhanhthi/interview-mountain-vs-beach/tree/main/report">
+								<i class="bi bi-journals"></i> Documentation
+							</a>
+							<a class="btn btn-danger btn-sm" target="_blank" href="https://github.com/dinhanhthi/interview-mountain-vs-beach">
+								<i class="bi bi-github"></i> Github
+							</a>
+						</div>
 					</div>
 
 					<div id="loader">
@@ -36,7 +44,7 @@
 
 					<div id="classifier">
 						<div id="main-img">
-							<img />
+							<img onerror="handleErrImg()" />
 							<div id="img-text-predict">image to be predicted</div>
 						</div>
 
@@ -77,12 +85,6 @@
 									<input id="predict" type="button" class="d-none" onclick="" >
 									<i class="bi bi-cpu"></i> Predict
 								</label>
-								<a class="btn btn-success btn-sm" target="_blank" href="report.pdf">
-									<i class="bi bi-journals"></i> My report
-								</a>
-								<a class="btn btn-danger btn-sm" target="_blank" href="https://github.com/dinhanhthi/interview-mountain-vs-beach">
-									<i class="bi bi-github"></i> Github
-								</a>
 							</div>
 						</div>
 
