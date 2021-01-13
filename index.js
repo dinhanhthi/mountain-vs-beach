@@ -48,11 +48,12 @@ async function predict () {
 
 			var score = Math.round((prediction[0] + Number.EPSILON) * 100);
 
-			if (prediction[0] > 0.65) {
+			var threshold = 0.65;
+			if (prediction[0] > threshold) {
 				result.getElementsByTagName("p")[0].innerHTML
 					= "It's <b>a mountain</b> (or related)!"
 					+ " I'm <b>" + String(score) + "%</b> sure!";
-			} else if(prediction[0] < 0.35) {
+			} else if(prediction[0] < 1-threshold) {
 				result.getElementsByTagName("p")[0].innerHTML
 					= "It's <b>a beach</b> (or related)!"
 						+ " I'm <b>" + String(100-score) + "%</b> sure!";
