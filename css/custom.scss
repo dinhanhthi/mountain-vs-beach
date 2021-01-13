@@ -68,13 +68,19 @@ div#result{
 #main-img{
 	height: 300px;
 	width: auto;
-	display: none;
 	margin-bottom: 1rem;
+	position: relative;
 	img{
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
 		border-radius: 10px;
+	}
+	div{
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%);
+		left: 50%;
 	}
 }
 

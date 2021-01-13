@@ -30,6 +30,7 @@ async function initialize() {
 // when predict button is clicked
 async function predict () {
 	try {
+		// imageDisplay = mainImage.firstElementChild;
 		if (imageDisplay.src != ""){
 
 			mainImage.style.display = "block";
@@ -65,6 +66,8 @@ async function predict () {
 						+ " If you ask me to guess anyway, it's a <b>" + notSure
 						+ "</b> with <b>" + String(notSureScore) + "%</b> confidence!";
 			}
+
+			imageDisplay.setAttribute("crossorigin", "");
 		} else {
 			result.getElementsByTagName("p")[0].innerHTML
 				= "You have to indicate an image to predict!"
@@ -96,18 +99,23 @@ function changeImage() {
 
 // if users uses url?
 async function changeImageByUrl() {
-	mainImage.style.display = "none";
+	// mainImage.style.display = "none";
 	result.style.display = "none";
 	var imgUrl = inputURL.value;
-	if (imgUrl.includes("base64")){
-		var blob = dataURItoBlob(dataURI);
-		imageDisplay.src = URL.createObjectURL(blob);
-	} else if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-		await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
-			.then(response => response.blob())
-			.then(images => {
-				imageDisplay.src = URL.createObjectURL(images);
-			})
+	// if (imgUrl.includes("base64")){
+	// 	var blob = dataURItoBlob(dataURI);
+	// 	imageDisplay.src = URL.createObjectURL(blob);
+	// } else if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+	// 	await fetch(proxyUrl+imgUrl) // https://cors-anywhere.herokuapp.com/${url}
+	// 		.then(response => response.blob())
+	// 		.then(images => {
+	// 			imageDisplay.src = URL.createObjectURL(images);
+	// 		})
+	// }
+
+	if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null){
+		imageDisplay.src = imgUrl;
+		imageDisplay.setAttribute("crossorigin", "anonymous");
 	}
 }
 
