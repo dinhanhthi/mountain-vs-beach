@@ -48,7 +48,7 @@ async function predict () {
 			if (prediction[0] > 0.65) {
 				result.getElementsByTagName("p")[0].innerHTML
 					= "It's <b>a mountain</b> (or related)!"
-					+ " I'm <b>" + String(score) + "</b>% sure!";
+					+ " I'm <b>" + String(score) + "%</b> sure!";
 			} else if(prediction[0] < 0.35) {
 				result.getElementsByTagName("p")[0].innerHTML
 					= "It's <b>a beach</b> (or related)!"
@@ -61,7 +61,7 @@ async function predict () {
 						+ " There may be some errors with your image or the image you indicated is not clearly a mountain or a beach."
 						+ " Please choose another one."
 						+ " If you ask me to guess anyway, it's a <b>" + notSure
-						+ "</b> with <b>" + String(notSureScore) + "</b>% confidence!";
+						+ "</b> with <b>" + String(notSureScore) + "%</b> confidence!";
 			}
 		} else {
 			result.getElementsByTagName("p")[0].innerHTML
