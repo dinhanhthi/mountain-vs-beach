@@ -14259,88 +14259,46 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Refs">Refs<a class="anchor-link" href="#Refs">&#182;</a></h2><p>Follow notebook <code>cat_dog_transfer_learning.ipynb</code></p>
+<h2 id="Mountain-vs-Beach-Classification">Mountain vs Beach Classification<a class="anchor-link" href="#Mountain-vs-Beach-Classification">&#182;</a></h2><ul>
+<li>An interview test of <a href="http://ideta.io/"><strong>Ideta company</strong></a>.</li>
+<li>Performed by <strong>Anh-Thi DINH</strong>.</li>
+<li><strong>Date</strong>: 13-Jan-2021.</li>
+<li><strong>2 Classes</strong>: "moutain" (and its related: mainland, forest, moutain path,...) and "beach" (and its related: sea, ocean, beach house,...)</li>
+<li><strong>Dataset</strong>: extracted (~369MB) from <a href="http://places.csail.mit.edu/">MIT's places dataset</a>. It contains ~15K images for each category.<ul>
+<li><strong>Remark</strong>: There are categoris <code>beach</code> and <code>mountain</code> in the original dataset but there are only ~5K images for each. That's why I use also other "related classes" to get more data, i.e.<ul>
+<li>"beach" = "beach" + "beach_house" + "ocean".</li>
+<li>"mountain" = "mountain" + "mountain_path" + "mountain_snowy".</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Method</strong>: using transfer learning and CNN.</li>
+<li><strong>Deploy</strong>: a web-app at <a href="http://mountain-beach.dinhanhthi.com/">mountain-beach.dinhanhthi.com</a>.</li>
+<li><strong>Result</strong>: 94.29% accuracy.</li>
+</ul>
+<p><strong>Remark</strong>:</p>
+<ol>
+<li>This notebook is re-decorated for more-clearly ideas. You may see the different numbers in the executed cells.</li>
+<li>I've tried several models, this one is the best I've obtained.</li>
+</ol>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from google.colab import drive</span>
-<span class="c1"># # drive.mount(&#39;/content/drive&#39;)</span>
-<span class="c1"># drive.mount(&quot;/content/drive&quot;, force_remount=True)</span>
-</pre></div>
-
-     </div>
 </div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Settings">Settings<a class="anchor-link" href="#Settings">&#182;</a></h2>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Mounted at /content/drive
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !ls drive/MyDrive/ML_colab/</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>dataset  datasetbeach_mountain	pretrained  save
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.compat.v1</span> <span class="kn">import</span> <span class="n">ConfigProto</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Fix GPU problems:</span>
+<span class="c1"># In case: Not found: No algorithm worked!</span>
+<span class="c1"># In case: This is probably because cuDNN failed to initialize</span>
+
+<span class="kn">from</span> <span class="nn">tensorflow.compat.v1</span> <span class="kn">import</span> <span class="n">ConfigProto</span>
 <span class="kn">from</span> <span class="nn">tensorflow.compat.v1</span> <span class="kn">import</span> <span class="n">InteractiveSession</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigProto</span><span class="p">()</span>
@@ -14379,7 +14337,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.applications.inception_v3</span> <span class="kn">import</span> <span class="n">InceptionV3</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Transfer-learning</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.applications.inception_v3</span> <span class="kn">import</span> <span class="n">InceptionV3</span>
 </pre></div>
 
      </div>
@@ -14387,38 +14346,28 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># local_weights_file = &#39;../pretrained/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5&#39;</span>
-<span class="c1"># local_weights_file = &#39;drive/MyDrive/ML_colab/pretrained/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5&#39;</span>
-</pre></div>
-
-     </div>
 </div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Model">Model<a class="anchor-link" href="#Model">&#182;</a></h2>
 </div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">im_dim</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Input image dimension</span>
+<span class="n">im_dim</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
 <span class="n">pre_trained_model</span> <span class="o">=</span> <span class="n">InceptionV3</span><span class="p">(</span><span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> 
                                 <span class="n">include_top</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
                                 <span class="n">weights</span> <span class="o">=</span> <span class="s2">&quot;imagenet&quot;</span><span class="p">)</span>
 
-<span class="c1"># pre_trained_model.load_weights(local_weights_file)</span>
-
 <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">pre_trained_model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
     <span class="n">layer</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="c1"># pre_trained_model.summary()</span>
+<span class="c1"># pre_trained_model.summary() # be careful, it&#39;s very long!</span>
 </pre></div>
 
      </div>
@@ -14432,7 +14381,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">last_layer</span> <span class="o">=</span> <span class="n">pre_trained_model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;mixed7&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># I take the layer &quot;mixed7&quot; as the last layer in the pre-trained model</span>
+<span class="c1"># I choose &quot;7&quot; for more information</span>
+<span class="n">last_layer</span> <span class="o">=</span> <span class="n">pre_trained_model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;mixed7&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;last layer output shape: &#39;</span><span class="p">,</span> <span class="n">last_layer</span><span class="o">.</span><span class="n">output_shape</span><span class="p">)</span>
 <span class="n">last_output</span> <span class="o">=</span> <span class="n">last_layer</span><span class="o">.</span><span class="n">output</span>
 </pre></div>
@@ -14469,16 +14420,18 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Flatten the output layer to 1 dimension</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># My model</span>
+
+<span class="c1"># Flatten the output layer to 1 dimension</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()(</span><span class="n">last_output</span><span class="p">)</span>
-<span class="c1"># Add a fully connected layer with 1,024 hidden units and ReLU activation</span>
+<span class="c1"># Add a fully connected layer</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-<span class="c1"># Add a dropout rate of 0.2</span>
+<span class="c1"># Add a dropout rate</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.35</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>                  
 <span class="c1"># Add a final sigmoid layer for classification</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span>  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>           
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span> <span class="n">pre_trained_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> 
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">pre_trained_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> 
 
 <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">RMSprop</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">),</span> 
               <span class="n">loss</span> <span class="o">=</span> <span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> 
@@ -14490,104 +14443,24 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !mv drive/MyDrive/ML_colab/datasetbeach_mountain/beach_mountain drive/MyDrive/ML_colab/dataset/</span>
-</pre></div>
-
-     </div>
 </div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Data">Data<a class="anchor-link" href="#Data">&#182;</a></h2>
 </div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># only on colab</span>
-<span class="c1"># import zipfile</span>
-
-<span class="c1"># dataset_dir = &#39;drive/MyDrive/ML_colab/dataset&#39;</span>
-<span class="c1"># zip_file = dataset_dir + &#39;/beach_mountain.zip&#39;</span>
-<span class="c1"># zip_ref = zipfile.ZipFile(zip_file, &#39;r&#39;)</span>
-<span class="c1"># zip_ref.extractall(dataset_dir+&#39;/b_m&#39;)</span>
-<span class="c1"># zip_ref.close()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !ls drive/MyDrive/ML_colab/dataset/b_m/beach_mountain/</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>train  validation
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %%time</span>
-<span class="c1"># import zipfile</span>
-
-<span class="c1"># dataset_dir = &#39;drive/MyDrive/ML_colab/dataset&#39;</span>
-<span class="c1"># zip_file = dataset_dir + &#39;/beach_mountain.zip&#39;</span>
-<span class="c1"># zip_ref = zipfile.ZipFile(zip_file, &#39;r&#39;)</span>
-<span class="c1"># zip_ref.extractall(&quot;/tmp&quot;)</span>
-<span class="c1"># zip_ref.close()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># After extracted from MIT&#39;s places dataset, </span>
+<span class="c1"># I obtain 5000 images for each category in the &quot;train&quot; folder</span>
+<span class="c1"># and only 100 images for each category in the &quot;test&quot; folder.</span>
+<span class="c1"># I use below function to re-split them in desired `SPLIT_SIZE` folders.</span>
+<span class="c1"># Purpose: train (87%) / validation (10%) / test (3%) in the total of 30K images for 2 categories.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
 <span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">SOURCE</span><span class="p">,</span> <span class="n">TRAINING</span><span class="p">,</span> <span class="n">TESTING</span><span class="p">,</span> <span class="n">SPLIT_SIZE</span><span class="p">):</span>
@@ -14613,71 +14486,12 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># # CAT -&gt; beach</span>
-<span class="c1"># CAT_SOURCE_DIR = &quot;../dataset/beach_mountain_more/beach/&quot;</span>
-<span class="c1"># TRAINING_CATS_DIR = &quot;../dataset/beach_mountain_more/train/beach/&quot;</span>
-<span class="c1"># TESTING_CATS_DIR = &quot;../dataset/beach_mountain_more/validation/beach/&quot;</span>
-<span class="c1"># split_size = .9</span>
-<span class="c1"># split_data(CAT_SOURCE_DIR, TRAINING_CATS_DIR, TESTING_CATS_DIR, split_size)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># # CAT -&gt; mountain</span>
-<span class="c1"># CAT_SOURCE_DIR = &quot;../dataset/beach_mountain_more/mountain/&quot;</span>
-<span class="c1"># TRAINING_CATS_DIR = &quot;../dataset/beach_mountain_more/train/mountain/&quot;</span>
-<span class="c1"># TESTING_CATS_DIR = &quot;../dataset/beach_mountain_more/validation/mountain/&quot;</span>
-<span class="c1"># split_size = .9</span>
-<span class="c1"># split_data(CAT_SOURCE_DIR, TRAINING_CATS_DIR, TESTING_CATS_DIR, split_size)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># # FOR test</span>
-<span class="c1"># CAT_SOURCE_DIR = &quot;../dataset/beach_mountain_more/beach/&quot;</span>
-<span class="c1"># TRAINING_CATS_DIR = &quot;../dataset/beach_mountain_more/train/beach/&quot;</span>
-<span class="c1"># TESTING_CATS_DIR = &quot;../dataset/beach_mountain_more/test/beach/&quot;</span>
-<span class="c1"># split_size = .973</span>
-<span class="c1"># split_data(CAT_SOURCE_DIR, TRAINING_CATS_DIR, TESTING_CATS_DIR, split_size)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># local data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load data</span>
 
 <span class="n">base_dir</span> <span class="o">=</span> <span class="s2">&quot;../dataset/beach_mountain_more&quot;</span>
-<span class="c1"># base_dir = &quot;drive/MyDrive/ML_colab/dataset/beach_mountain&quot;</span>
-<span class="c1"># base_dir = &quot;drive/MyDrive/ML_colab/dataset/b_m/beach_mountain/&quot;</span>
 
 <span class="n">train_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">)</span>
 <span class="n">validation_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;validation&#39;</span><span class="p">)</span>
@@ -14704,26 +14518,36 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">rescale</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">255.</span><span class="p">,</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Generate training and test generators</span>
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="c1"># For training</span>
+<span class="n">train_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">rescale</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">255.</span><span class="p">,</span>
                                    <span class="n">rotation_range</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
                                    <span class="n">width_shift_range</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
                                    <span class="n">height_shift_range</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
                                    <span class="n">shear_range</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
                                    <span class="n">zoom_range</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
                                    <span class="n">horizontal_flip</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="n">test_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">rescale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
-
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">train_generator</span> <span class="o">=</span> <span class="n">train_datagen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span><span class="n">train_dir</span><span class="p">,</span>
                                                     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span><span class="p">,</span>
                                                     <span class="n">class_mode</span> <span class="o">=</span> <span class="s1">&#39;binary&#39;</span><span class="p">,</span> 
                                                     <span class="n">target_size</span> <span class="o">=</span> <span class="n">im_dim</span><span class="p">)</span>
 
+<span class="c1"># For validating</span>
+<span class="n">test_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">rescale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
 <span class="n">validation_generator</span> <span class="o">=</span>  <span class="n">test_datagen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span><span class="n">validation_dir</span><span class="p">,</span>
                                                          <span class="n">batch_size</span>  <span class="o">=</span> <span class="n">batch_size</span><span class="p">,</span>
                                                          <span class="n">class_mode</span>  <span class="o">=</span> <span class="s1">&#39;binary&#39;</span><span class="p">,</span> 
                                                          <span class="n">target_size</span> <span class="o">=</span> <span class="n">im_dim</span><span class="p">)</span>
+
+<span class="c1"># For testing</span>
+<span class="n">test_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">rescale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">test_generator</span> <span class="o">=</span>  <span class="n">test_datagen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span><span class="n">test_dir</span><span class="p">,</span>
+                                                   <span class="n">batch_size</span>  <span class="o">=</span> <span class="n">batch_size</span><span class="p">,</span>
+                                                   <span class="n">class_mode</span>  <span class="o">=</span> <span class="s1">&#39;binary&#39;</span><span class="p">,</span> 
+                                                   <span class="n">target_size</span> <span class="o">=</span> <span class="n">im_dim</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14754,52 +14578,20 @@ Found 929 images belonging to 2 classes.
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">rescale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
-<span class="n">test_generator</span> <span class="o">=</span>  <span class="n">test_datagen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span><span class="n">test_dir</span><span class="p">,</span>
-                                                         <span class="n">batch_size</span>  <span class="o">=</span> <span class="n">batch_size</span><span class="p">,</span>
-                                                         <span class="n">class_mode</span>  <span class="o">=</span> <span class="s1">&#39;binary&#39;</span><span class="p">,</span> 
-                                                         <span class="n">target_size</span> <span class="o">=</span> <span class="n">im_dim</span><span class="p">)</span>
-</pre></div>
-
-     </div>
 </div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Train">Train<a class="anchor-link" href="#Train">&#182;</a></h2>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Found 929 images belonging to 2 classes.
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">myCallback</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">Callback</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># A callback to stop the training if we get validation accuracy over 97%</span>
+
+<span class="k">class</span> <span class="nc">myCallback</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">Callback</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="p">{}):</span>
         <span class="k">if</span><span class="p">(</span><span class="n">logs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">logs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.97</span><span class="p">)</span> <span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Reached 96.0</span><span class="si">% a</span><span class="s2">ccuracy so cancelling training!&quot;</span><span class="p">)</span>
@@ -14819,14 +14611,13 @@ Found 929 images belonging to 2 classes.
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-            <span class="n">train_generator</span><span class="p">,</span>
-            <span class="n">validation_data</span> <span class="o">=</span> <span class="n">validation_generator</span><span class="p">,</span>
-            <span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="n">validation_generator</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="n">validation_generator</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-            <span class="n">epochs</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
-            <span class="n">validation_steps</span> <span class="o">=</span> <span class="n">validation_generator</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="n">validation_generator</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-            <span class="n">verbose</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">my_callback</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_generator</span><span class="p">,</span>
+                    <span class="n">validation_data</span> <span class="o">=</span> <span class="n">validation_generator</span><span class="p">,</span>
+                    <span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="n">validation_generator</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="n">validation_generator</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+                    <span class="n">epochs</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                    <span class="n">validation_steps</span> <span class="o">=</span> <span class="n">validation_generator</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="n">validation_generator</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+                    <span class="n">verbose</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">my_callback</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -15054,6 +14845,11 @@ Epoch 100/100
 
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Save-&amp;-convert-Model">Save &amp; convert Model<a class="anchor-link" href="#Save-&amp;-convert-Model">&#182;</a></h2>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
@@ -15062,10 +14858,11 @@ Epoch 100/100
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">saved_model_path</span> <span class="o">=</span> <span class="s2">&quot;../saved_model&quot;</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">saved_model_path</span> <span class="o">+</span> <span class="s1">&#39;/SavedModel_100e_945_pre_imagenet_inceptionv3_200_moredata&#39;</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">saved_model_path</span> <span class="o">+</span> <span class="s1">&#39;/model_100e_945_pre_imagenet_inceptionv3_200_moredata.h5&#39;</span><span class="p">)</span>
+<span class="c1"># SaveModel format: used to convert to TensorFlow.js format</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">saved_model_path</span> <span class="o">+</span> <span class="s1">&#39;/SavedModel_100e_945_pre_imagenet_inceptionv3_200_moredata&#39;</span><span class="p">)</span> <span class="c1"># ~350MB</span>
 
-<span class="c1"># model.save(&quot;drive/MyDrive/ML_colab/save/beach_mountain/100epochs/SavedModel_100e_94&quot;)</span>
+<span class="c1"># HDF5 format: used in other notebooks and frameworks</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">saved_model_path</span> <span class="o">+</span> <span class="s1">&#39;/model_100e_945_pre_imagenet_inceptionv3_200_moredata.h5&#39;</span><span class="p">)</span> <span class="c1"># ~350MB</span>
 </pre></div>
 
      </div>
@@ -15094,49 +14891,21 @@ Epoch 100/100
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pwd
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>/learning/ds-sub/mountain-vs-beach-a-z-web/notebooks
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convert to TFJS</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convert to TensorFlow.js</span>
 <span class="o">!</span><span class="nb">cd</span> ../saved_model
+
+<span class="c1"># Original model, ~ 193MB</span>
+<span class="o">!</span>tensorflowjs_converter --input_format<span class="o">=</span>tf_saved_model --output_node_names<span class="o">=</span><span class="s1">&#39;mountain_beach&#39;</span> --saved_model_tags<span class="o">=</span>serve SavedModel_100e_945_pre_imagenet_inceptionv3_200_moredata not_quantized
+
+<span class="c1"># Already-quantized model, ~48M</span>
+<span class="c1"># We need that for a quicker loading time in the website</span>
+<span class="c1"># Weakness: the accuracy is decreased!</span>
 <span class="o">!</span>tensorflowjs_converter --input_format<span class="o">=</span>tf_saved_model --output_node_names<span class="o">=</span><span class="s1">&#39;mountain_beach&#39;</span> --saved_model_tags<span class="o">=</span>serve SavedModel_100e_945_pre_imagenet_inceptionv3_200_moredata web_model
 </pre></div>
 
@@ -15145,6 +14914,11 @@ Epoch 100/100
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Visualization">Visualization<a class="anchor-link" href="#Visualization">&#182;</a></h2>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
@@ -15158,7 +14932,7 @@ Epoch 100/100
 <span class="n">loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
 <span class="n">val_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
 
-<span class="c1"># loss</span>
+<span class="c1"># Loss</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training loss&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation loss&#39;</span><span class="p">)</span>
@@ -15218,7 +14992,7 @@ Epoch 100/100
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># accuracy</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Accuracy</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">acc</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training accuracy&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation accuracy&#39;</span><span class="p">)</span>
@@ -15272,13 +15046,19 @@ Epoch 100/100
 
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Check-the-accuracy">Check the accuracy<a class="anchor-link" href="#Check-the-accuracy">&#182;</a></h2>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_generator</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Compute the final accuracy</span>
+<span class="n">test_generator</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">test_generator</span><span class="p">)</span>
 </pre></div>
 
@@ -15322,40 +15102,13 @@ Epoch 100/100
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># test_dir = os.path.join(base_dir, &#39;internet&#39;)</span>
-
-<span class="c1"># test_datagen = ImageDataGenerator(rescale = 1.0/255.)</span>
-
-<span class="c1"># test_beach_dir = os.path.join(test_dir, &#39;beach&#39;)</span>
-<span class="c1"># test_moutain_dir = os.path.join(test_dir, &#39;mountain&#39;)</span>
-
-<span class="c1"># test_generator =  test_datagen.flow_from_directory(test_dir,</span>
-<span class="c1">#                                                          batch_size  = batch_size,</span>
-<span class="c1">#                                                          class_mode  = &#39;binary&#39;, </span>
-<span class="c1">#                                                          target_size = im_dim)</span>
-
-<span class="c1"># test_generator.reset()</span>
-<span class="c1"># model.evaluate(test_generator)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># check the labels</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Check the labels</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_generator</span><span class="o">.</span><span class="n">class_indices</span><span class="p">)</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">v</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 <span class="n">labels</span>
@@ -15406,14 +15159,10 @@ Epoch 100/100
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># test_generator.reset()</span>
-<span class="c1"># pred = model.predict(test_generator, verbose=1)</span>
-<span class="c1"># predicted_class_indices=(pred&gt;0.5).astype(&quot;int32&quot;)</span>
-<span class="c1"># predictions = [labels[k[0]] for k in predicted_class_indices]</span>
-<span class="c1"># predictions</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing</span> <span class="kn">import</span> <span class="n">image</span>
 </pre></div>
 
      </div>
@@ -15424,10 +15173,23 @@ Epoch 100/100
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">im_dim</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># # Predict a specific image</span>
+<span class="n">test_file</span> <span class="o">=</span> <span class="s2">&quot;../dataset/beach_mountain/internet/mountain1.jpg&quot;</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">load_img</span><span class="p">(</span><span class="n">test_file</span><span class="p">,</span> <span class="n">target_size</span><span class="o">=</span><span class="n">im_dim</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">img_to_array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="mi">255</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">])</span>
+
+<span class="n">classes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+<span class="n">classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">classes</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">classes</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">test_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; is a mountain&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">test_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; is a beach&quot;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15443,33 +15205,17 @@ Epoch 100/100
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>(200, 200)</pre>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>mountain1.jpg is a mountain
+</pre>
 </div>
-
-</div>
-
 </div>
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing</span> <span class="kn">import</span> <span class="n">image</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -15478,14 +15224,13 @@ Epoch 100/100
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># predict for an uploaded image</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Predict a folder of images </span>
+<span class="c1"># I downloaded these images from internet, not from MIT&#39;s dataset!</span>
+
 <span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;../dataset/beach_mountain/internet/&#39;</span> <span class="c1"># current dir</span>
-<span class="c1"># file_path = &#39;../dataset/beach_mountain/test/beach/&#39; # current dir</span>
-<span class="c1"># file_path = &#39;../dataset/beach_mountain/test/mountain/&#39; # current dir</span>
 <span class="n">test_files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">test_files</span><span class="p">:</span>
-    <span class="c1"># predicting images</span>
     <span class="n">path</span><span class="o">=</span><span class="n">file_path</span> <span class="o">+</span> <span class="n">file</span>
     <span class="n">img</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">load_img</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">target_size</span><span class="o">=</span><span class="n">im_dim</span><span class="p">)</span>
     <span class="n">x</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">img_to_array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
@@ -15495,8 +15240,6 @@ Epoch 100/100
     
     <span class="n">classes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
     <span class="n">classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">classes</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="c1">#     print(classes)</span>
-
     <span class="k">if</span> <span class="n">classes</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">file</span> <span class="o">+</span> <span class="s2">&quot; is a mountain&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -15548,84 +15291,6 @@ mountain7.jpg is a mountain
 
 </div>
 
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from an image</span>
-<span class="n">test_file</span> <span class="o">=</span> <span class="s2">&quot;../dataset/beach_mountain/internet/mountain1.jpg&quot;</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">load_img</span><span class="p">(</span><span class="n">test_file</span><span class="p">,</span> <span class="n">target_size</span><span class="o">=</span><span class="n">im_dim</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">img_to_array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="mi">255</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">])</span>
-
-<span class="n">classes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
-<span class="n">classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">classes</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="k">if</span> <span class="n">classes</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">test_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; is a mountain&quot;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">test_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; is a beach&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>mountain1.jpg is a mountain
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># model.save(&quot;drive/MyDrive/ML_colab/save/beach_mountain/100epochs/model_100e_94.h5&quot;)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># keep colab alive</span>
-<span class="c1"># while True:pass</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
 </div>
