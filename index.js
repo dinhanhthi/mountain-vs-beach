@@ -6,8 +6,8 @@ const listImgs = document.getElementById("list-imgs");
 const mainImage = document.getElementById("main-img");
 const imageDisplay = mainImage.firstElementChild;
 const inputURL = document.getElementById("img-url");
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
 const predictLoader = document.getElementById("predict-loader");
+const imgTextPredict = document.getElementById("img-text-predict");
 
 // init
 async function initialize() {
@@ -95,9 +95,11 @@ function changeImage() {
 		imageDisplay.src = URL.createObjectURL(uploadedImage);
 		result.style.display = "none";
 		mainImage.style.display = "block";
+		imgTextPredict.style.display = "none";
 }
 
 // if users uses url?
+const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // fix CORP problem
 async function changeImageByUrl() {
 	// mainImage.style.display = "none";
 	result.style.display = "none";
@@ -116,6 +118,7 @@ async function changeImageByUrl() {
 	if (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null){
 		imageDisplay.src = imgUrl;
 		imageDisplay.setAttribute("crossorigin", "anonymous");
+		imgTextPredict.style.display = "none";
 	}
 }
 
@@ -146,6 +149,7 @@ listImgs.getElementsByClassName("item").forEach(it => {
 		imageDisplay.src = it.firstElementChild.src;
 		result.style.display = "none";
 		mainImage.style.display = "block";
+		imgTextPredict.style.display = "none";
 	});
 });
 
