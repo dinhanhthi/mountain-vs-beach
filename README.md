@@ -1,7 +1,12 @@
-# Mountain ⛰️ vs Beach 🏖️ Classifier
+# Mountain vs Beach Classifier
 
 <p align="center">
   <img src="./img/favicon.png" width="120px" height="120px"/>
+</p>
+
+<p align="center">
+Hello, I'm a classifier. 🤗<br />
+I can tell you whether an image you indicate is <b>a mountain</b> ⛰️ or <b>a beach</b> 🏖️ or <b>their related</b> things 🌊 🌳 (ocean, sea, forest, mainland,...).
 </p>
 
 ## Overview
