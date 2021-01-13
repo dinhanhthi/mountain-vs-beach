@@ -9,6 +9,7 @@
 - **Dataset**: extracted (~369MB) from [MIT's places dataset](http://places.csail.mit.edu/). It contains ~15K images for each category.
 - __Method__: using transfer learning and CNN.
 - __Deploy__: a web-app at [mountain-beach.dinhanhthi.com](http://mountain-beach.dinhanhthi.com/) using TenforFlow.js.
+- __Jupyter notebook__: [view in HTML format](https://dinhanhthi.github.io/tools/github-html?https://github.com/dinhanhthi/interview-mountain-vs-beach/blob/main/notebook/mountain_beach_tf_course_catdog_moreImages.html).
 - __Result__: 94.29% accuracy.
 
 ## Methodology
@@ -67,7 +68,7 @@
         4. I didn't choose them because I've tested some other projects which are built based on these techniques. They're not faster much than the serverless approach but they consume more time to construct.
     3. **Frontend**: [Bootstrap](https://blog.getbootstrap.com/) + HTML + CSS + Vanilla JS.
         1. 3 ways to input an image:
-           1. Upload from local image (**recommended**).
+           1. Upload from local (**recommended**).
            2. Choose example images right on the page.
            3. Paste from URL of image (must follow a good format, otherwise, it will not work!)
         2. **The meaning of results**: because our problem is a binary classification. I use `sigmoid` to get the probability of the `score`. This `score` is between `0` (beach) and `1` (mountain).
