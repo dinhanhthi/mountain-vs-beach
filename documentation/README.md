@@ -70,7 +70,7 @@
         1. 3 ways to input an image:
            1. Upload from local (**recommended**).
            2. Choose example images right on the page.
-           3. Paste from URL of image (must follow a good format, otherwise, it will not work!)
+           3. Paste from URL of image (must follow a good format, otherwise, it will not work!). Acceptable URLs are `.jpeg`, `.png`, `.jpg` or `base64` urls.
         2. **Technical problem with URL option**: TFJS's `fromPixels()` method is causing a [CORS error](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors) (we cannot fetch the image via a intermediate site like our web-app).
             - **Solution**: use an intermediate site which allows CORS anywhere (I use `https://cors-anywhere.herokuapp.com`). The downside of this approach is that every time we paste a new image URL, we have to wait a little bit for the image to appear on the site. It kill the user experience a bit.
         3. **The meaning of results**: because our problem is a binary classification. I use `sigmoid` to get the probability of the `score`. This `score` is between `0` (beach) and `1` (mountain).
