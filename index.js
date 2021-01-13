@@ -30,13 +30,14 @@ async function initialize() {
 	});
 }
 
-async function fetch_img_url() {
-	await fetch(proxyUrl + inputURL.value) // https://cors-anywhere.herokuapp.com/${url}
-		.then(response => response.blob())
-		.then(images => {
-			imageDisplay.src = URL.createObjectURL(images);
-		});
-}
+// async function fetch_img_url() {
+// 	await fetch(proxyUrl + inputURL.value) // https://cors-anywhere.herokuapp.com/${url}
+// 		.then(response => response.blob())
+// 		.then(images => {
+// 			imageDisplay.src = URL.createObjectURL(images);
+// 		});
+// }
+
 
 // when predict button is clicked
 async function predict() {
@@ -65,7 +66,7 @@ async function predict() {
 			} else if (prediction[0] < 1 - threshold) {
 				result.getElementsByTagName("p")[0].innerHTML
 					= "It's <b>a beach</b> (or related)!"
-					+ " I'm <b>" + String(100 - score) + "%</b> sure!";
+					+ " I'm <b>" + String(100 - score) + "%</b> sure if your image really have beach/mountain!";
 			} else {
 				var notSure = ((prediction[0] > 0.5) ? "mountain" : "beach");
 				var notSureScore = ((prediction[0] > 0.5) ? score : 100 - score);
@@ -119,8 +120,10 @@ async function changeImageByUrl() {
 		var blob = dataURItoBlob(inputURL.value);
 		imageDisplay.src = URL.createObjectURL(blob);
 	} else if (inputURL.value.match(/(jpg|jpeg|gif|png)((\?.*)$|$)/mg) != null) {
+		imageDisplay.onload = () => { imageDisplay = imageDisplay.onload = null; }
+		imageDisplay.setAttribute("crossOrigin", 'anonymous');
 		imageDisplay.src = inputURL.value;
-		fetch_img_url();
+		// fetch_img_url();
 	}
 	imgTextPredict.style.display = "none";
 }
