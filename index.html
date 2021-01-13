@@ -1,178 +1,185 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-		<title>Mountain vs Beach Classifier | Anh-Thi DINH</title>
-		<meta name="viewport" content="width=device-width" />
-		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-		<link rel="stylesheet" href="css/custom.css">
-	</head>
 
-  <body>
-    <main role="main" class="container">
-			<div class="row justify-content-md-center">
-				<div class="col-md-8 col-12">
+<head>
+	<meta charset="UTF-8">
+	<title>Mountain vs Beach Classifier | Anh-Thi DINH</title>
+	<meta name="viewport" content="width=device-width" />
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="css/custom.css">
+</head>
 
-					<div class="heading">
-						<div class="logo">
-							<img src="img/favicon.png">
+<body>
+	<main role="main" class="container">
+		<div class="row justify-content-md-center">
+			<div class="col-md-8 col-12">
+
+				<div class="heading">
+					<div class="logo">
+						<img src="img/favicon.png">
+					</div>
+					<h1>Mountain vs Beach Classifier</h1>
+					<p class="intro">
+						Hello, I'm a classifier. 🤗<br />
+						I can tell you whether an image you indicate is <b>a mountain</b> ⛰️ or <b>a beach</b> 🏖️ or <b>their
+							related</b> things 🌊 🌳 (ocean, sea, forest, mainland,...).
+					</p>
+					<div class="buttons text-center">
+						<a class="btn btn-success btn-sm" target="_blank"
+							href="https://github.com/dinhanhthi/interview-mountain-vs-beach/tree/main/documentation">
+							<i class="bi bi-journals"></i> Documentation
+						</a>
+						<a class="btn btn-danger btn-sm" target="_blank"
+							href="https://github.com/dinhanhthi/interview-mountain-vs-beach">
+							<i class="bi bi-github"></i> Github
+						</a>
+					</div>
+				</div>
+
+				<div id="loader">
+					<p>Loading trained model, please wait around <b>40 seconds (max)</b>.<br />
+						Don't worry, you <b>only</b> have to wait <b>once</b>! The next time you load the page, it's quick!</p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0"
+							aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+					</div>
+				</div>
+
+				<div id="classifier">
+					<div id="main-img">
+						<img onerror="handleErrImg()" />
+						<div id="img-text-predict">image to be predicted</div>
+					</div>
+
+					<!-- result -->
+					<div id="predict-loader">
+						<div class="spinner-border text-success" role="status">
+							<span class="visually-hidden">Loading...</span>
 						</div>
-						<h1>Mountain vs Beach Classifier</h1>
-						<p class="intro">
-							Hello, I'm a classifier. 🤗<br />
-							I can tell you whether an image you indicate is <b>a mountain</b> ⛰️ or <b>a beach</b> 🏖️ or <b>their related</b> things 🌊 🌳 (ocean, sea, forest, mainland,...).
-						</p>
+						<span> predicting...</span>
+					</div>
+					<div id="result" class="result">
+						<p>No result yet!</p>
+					</div>
+
+					<!-- list of buttons -->
+					<div class="button-row">
+						<!-- input -->
+						<input id="img-url" type="text" class="form-control"
+							placeholder="Enter an image URL. I accept jpeg, jpg, png files." onchange="changeImageByUrl()"
+							onkeyup="this.onchange();">
+
+						<div class="guide">
+							(URL should have a form like "<i>http://path/to/image.jpg</i>", otherwise it may not work!)<br />
+							<b>The upload button is the best choice!</b>
+						</div>
+
+						<!-- buttons -->
 						<div class="buttons text-center">
-							<a class="btn btn-success btn-sm" target="_blank" href="https://github.com/dinhanhthi/interview-mountain-vs-beach/tree/main/documentation">
-								<i class="bi bi-journals"></i> Documentation
-							</a>
-							<a class="btn btn-danger btn-sm" target="_blank" href="https://github.com/dinhanhthi/interview-mountain-vs-beach">
-								<i class="bi bi-github"></i> Github
-							</a>
+							<label class="btn btn-primary btn-sm" for="my-file-selector">
+								<input id="my-file-selector" type="file" class="d-none" onchange="changeImage()"
+									accept="image/jpeg, image/png">
+								<i class="bi bi-upload"></i> Upload your own image
+							</label>
+							<label class="btn btn-warning btn-sm" for="predict">
+								<input id="predict" type="button" class="d-none" onclick="">
+								<i class="bi bi-cpu"></i> Predict
+							</label>
+							<div class="guide">(You may wait 3s for the first time you click on "Predict")</div>
 						</div>
 					</div>
 
-					<div id="loader">
-						<p>Loading trained model, please wait around <b>40 seconds (max)</b>.<br />
-							Don't worry, you <b>only</b> have to wait <b>once</b>! The next time you load the page, it's quick!</p>
-						<div class="progress">
-							<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-						</div>
-					</div>
+				</div>
 
-					<div id="classifier">
-						<div id="main-img">
-							<img onerror="handleErrImg()" />
-							<div id="img-text-predict">image to be predicted</div>
-						</div>
+			</div>
+		</div>
 
-						<!-- result -->
-						<div id="predict-loader">
-							<div class="spinner-border text-success" role="status">
-								<span class="visually-hidden">Loading...</span>
-							</div>
-							<span> predicting...</span>
-						</div>
-						<div id="result" class="result">
-							<p>No result yet!</p>
-						</div>
+		<div id="list-imgs" class="row">
 
-						<!-- list of buttons -->
-						<div class="button-row">
-							<!-- input -->
-							<input
-								id="img-url"
-								type="text"
-								class="form-control"
-								placeholder="Enter an image URL. I accept jpeg, jpg, png files."
-								onchange="changeImageByUrl()"
-								onkeyup="this.onchange();">
+			<div class="col-12">
+				<p class="text-center">You can choose below images for quickly testing.</p>
+			</div>
 
-							<div class="guide">
-								(URL should have a form like "<i>http://path/to/image.jpg</i>", otherwise it may not work!)<br />
-								<b>The upload button is the best choice!</b>
-							</div>
-
-							<!-- buttons -->
-							<div class="buttons text-center">
-								<label class="btn btn-primary btn-sm" for="my-file-selector">
-									<input id="my-file-selector" type="file" class="d-none" onchange="changeImage()" accept="image/jpeg, image/png" >
-									<i class="bi bi-upload"></i> Upload your own image
-								</label>
-								<label class="btn btn-warning btn-sm" for="predict">
-									<input id="predict" type="button" class="d-none" onclick="" >
-									<i class="bi bi-cpu"></i> Predict
-								</label>
-								<div class="guide">(You may wait 3s for the first time you click on "Predict")</div>
-							</div>
-						</div>
-
-					</div>
-
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/b1.jpg" />
+				</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/b2.jpg" />
+				</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/b3.jpg" />
+				</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/b4.jpg" />
 				</div>
 			</div>
 
-			<div id="list-imgs" class="row">
-
-				<div class="col-12">
-					<p class="text-center">You can choose below images for quickly testing.</p>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/b5.jpg" />
 				</div>
-
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/b1.jpg" />
-					</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/b6.jpg" />
 				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/b2.jpg" />
-					</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/m1.jpg" />
 				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/b3.jpg" />
-					</div>
-				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/b4.jpg" />
-					</div>
-				</div>
-
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/b5.jpg" />
-					</div>
-				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/b6.jpg" />
-					</div>
-				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/m1.jpg" />
-					</div>
-				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/m2.jpg" />
-					</div>
-				</div>
-
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/m3.jpg" />
-					</div>
-				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/m4.jpg" />
-					</div>
-				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/m5.jpg" />
-					</div>
-				</div>
-				<div class="col-md-3 col-6">
-					<div class="item">
-						<img src="img/list_imgs/m6.jpg" />
-					</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/m2.jpg" />
 				</div>
 			</div>
 
-			<div class="col-12 mt-3">
-				<p class="text-center">
-					Made with ❤️ by <a href="https://dinhanhthi.com" target="_blank">Thi</a> for an interview test of <a href="http://ideta.io/">Ideta company</a>.
-				</p>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/m3.jpg" />
+				</div>
 			</div>
-		</main>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/m4.jpg" />
+				</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/m5.jpg" />
+				</div>
+			</div>
+			<div class="col-md-3 col-6">
+				<div class="item">
+					<img src="img/list_imgs/m6.jpg" />
+				</div>
+			</div>
+		</div>
 
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
-    <script src="index.js"></script>
-	</body>
+		<div class="col-12 mt-3">
+			<p class="text-center">
+				Made with ❤️ by <a href="https://dinhanhthi.com" target="_blank">Thi</a> for an interview test of <a
+					href="http://ideta.io/">Ideta company</a>.
+			</p>
+		</div>
+	</main>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+	<script src="index.js"></script>
+</body>
+
 </html>
