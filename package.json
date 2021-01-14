@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "css": "node-sass css/custom.scss -o css",
-    "css-watch": "npm run css && node-sass css/custom.scss -wo css"
+    "css": "node-sass src/custom.scss -o src",
+    "css-watch": "npm run css && node-sass src/custom.scss -wo src"
   },
   "dependencies": {
     "http-server": "^0.12.3"
