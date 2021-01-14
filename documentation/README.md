@@ -39,9 +39,10 @@
 
 		# Model
 		model = Model(pre_trained_model.input, x)
-		model.compile(optimizer = RMSprop(lr=1e-5),
-              		  loss = 'binary_crossentropy',
-                      metrics = ['accuracy'])
+		model.compile(
+            optimizer = RMSprop(lr=1e-5),
+            loss = 'binary_crossentropy',
+            metrics = ['accuracy'])
 
 		# Train with epochs=100, batch_size=50
 		```
