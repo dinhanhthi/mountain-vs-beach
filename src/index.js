@@ -12,10 +12,10 @@ let goodImg = true;
 // init
 async function initialize() {
 	// 193MB version
-	// model = await tf.loadGraphModel('../saved_model/not-quantized/model.json');
+	// model = await tf.loadGraphModel('saved_model/not-quantized/model.json');
 
 	// 48MB version
-	model = await tf.loadGraphModel('../saved_model/quantized/model.json');
+	model = await tf.loadGraphModel('saved_model/quantized/model.json');
 	classifierElement.style.display = 'block';
 	listImgs.style.display = "flex";
 	if (bar < 99) {
