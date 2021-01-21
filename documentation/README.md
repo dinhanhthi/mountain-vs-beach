@@ -55,7 +55,7 @@
     4. Using smaller dropout (`0.2` instead of `0.35`): smaller accuracy.
     5. Using bigger input size (`224x224`), smaller learning rate or bigger `batch_size`: not enough GPU memory or time to train the model.
 5. __Deployment__:
-    1. **Result**: [mountain-beach.dinhanhthi.com](http://mountain-beach.dinhanhthi.com/).
+    1. **Result**: [dinhanhthi.github.io/mountain-vs-beach](https://dinhanhthi.github.io/mountain-vs-beach/).
     1. __Chosen approach__ (serverless): using [TensorFlow.js](https://www.tensorflow.org/js) to load weights + trained model from `.json` and `.bin` files + static site + hosted on [Netlify](http://netlify.com/) (free).
         - **Weakness**: trained model is big (193MB), it takes too much time for users to load the site.
         - **Solution**: Using quantization technique in [tfjs-converter](https://github.com/tensorflow/tfjs/tree/master/tfjs-converter) to reduce the model from 193MB to 48MB (it's also big but better).
