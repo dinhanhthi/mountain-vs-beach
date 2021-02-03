@@ -15,7 +15,7 @@
 ## Methodology
 
 1. __Overview the task__: Number of steps? Possible approaches? Available frameworks and tools? Data?
-2. __Find and get dataset__: extracted (~369MB) from [MIT's places dataset](http://places.csail.mit.edu/) (26GB). It contains ~15K images for each category. __Remark__: There are categoris `beach` and `mountain` in the original dataset but there are only ~5K images for each. That's why I use also other "related classes" to get more data, i.e.
+2. __Find and get dataset__: extracted (~369MB) from [MIT's places dataset](http://places.csail.mit.edu/) (26GB). It contains ~15K images for each category. __Remark__: There are categories `beach` and `mountain` in the original dataset but there are only ~5K images for each. That's why I use also other "related classes" to get more data, i.e.
     - "beach realated" = "beach" + "beach_house" + "ocean".
     - "mountain related" = "mountain" + "mountain_path" + "mountain_snowy".
 3. Choose appropriate methods & tools:
