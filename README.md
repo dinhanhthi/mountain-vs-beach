@@ -1,4 +1,4 @@
-# Mountain vs Beach Classifier [![Netlify Status](https://api.netlify.com/api/v1/badges/e44abbe6-2c54-4eeb-b303-ad96f889cc47/deploy-status)](https://app.netlify.com/sites/pensive-payne-1e5613/deploys)
+# Mountain vs Beach Classifier
 
 <p align="center">
   <img src="./img/favicon.png" width="120px" height="120px"/>
