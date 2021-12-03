@@ -17,7 +17,7 @@ I can tell you whether an image you indicate is <b>a mountain</b> ⛰️ or <b>a
 - **2 Classes**: "moutain" (and its related: mainland, forest, moutain path,...) and "beach" (and its related: sea, ocean, beach house,...)
 - **Dataset**: extracted (~369MB) from [MIT's places dataset](http://places.csail.mit.edu/). It contains ~15K images for each category.
 - __Method__: using transfer learning and CNN.
-- __Deploy__: a web-app at [dinhanhthi.github.io/mountain-vs-beach](http://dinhanhthi.github.io/mountain-vs-beach) using TenforFlow.js.
+- __Deploy__: a web-app at [dinhanhthi.github.io/mountain-vs-beach](http://dinhanhthi.github.io/mountain-vs-beach) using TensorFlow.js.
 - __Jupyter notebook__: [view in HTML format](https://dinhanhthi.github.io/tools/github-html?https://github.com/dinhanhthi/interview-mountain-vs-beach/blob/main/notebook/mountain_beach_tf_course_catdog_moreImages.html).
 - __Documentation__: [read this](./documentation/README.md).
 - __Result__: 94.29% accuracy.
